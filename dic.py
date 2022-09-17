@@ -16,8 +16,6 @@ from nonebot.matcher import Matcher
 from . import variable2
 from . import message
 
-
-
 def opendictxt(): ##打开词库
     try:
         with open("./dic/dic.txt","r",encoding="utf_8") as f:
