@@ -89,29 +89,24 @@ async def chuliciku(msg,event): ##读取词库
         dic1 = qrdic_json
         i = (int(dic[msg])+1)
         while i < len(dic1):
-            print(dic1[i])
             if dic1[i]=="\n" :
                 logger.success("消息打印成功")
                 return k
             else:
                 str_1 = str(dic1[i]).replace(str(dic1[i][-1]), "").replace("\\n","\n").replace("\\r","\r")
-                print(str_1)
                 Rstr = re.findall(r"[%](.*?)[%]", str_1)
                 try:
                     for u in Rstr:
                         logger.success(f"词库变量{u}加载成功")
                         str_1 = str_1.replace("%"+u+"%", await message.message.__dict__.get(u).__func__(event))
-                        print(str_1)
                     ORstr = re.findall(r"[$](.*?)[$]", str_1)
 
                     for v in ORstr:
                         logger.success(f"词库变量{v}加载成功")
                         o = v.split(' ',1)
                         str_1 =  str_1.replace("$"+v+"$",await variable2.Task.__dict__.get(o[0]).__func__(o[1]))
-                        print(str_1)
                 except(AttributeError):
                     pass
-                print(str_1)
                 k.append(str_1)
             i = i+1
 
