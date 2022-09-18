@@ -16,18 +16,18 @@ from nonebot.matcher import Matcher
 from . import variable2
 from . import message
 
+
+
 def opendictxt(): ##打开词库
     try:
         with open("./dic/dic.txt","r",encoding="utf_8") as f:
             ## 打开词库 作为全局缓存
             global qrdic_json
             f = f.readlines()
-            if f[len(f)-1][-1] == "\n":
+            if f[len(f)-1].find("\n")==-1:
                 f.append("\n")
-                pass
-            else:
-                f.append("\n")
-                f[len(f)-2]=f[len(f)-2]+"\n"
+                f[len(f)-2] = f[len(f)-2]+"\n"
+
             qrdic_json = f
             return qrdic_json
     except(FileNotFoundError):
@@ -104,7 +104,8 @@ async def chuliciku(msg,event): ##读取词库
                     for v in ORstr:
                         logger.success(f"词库变量{v}加载成功")
                         o = v.split(' ',1)
-                        str_1 =  str_1.replace("$"+v+"$",await variable2.Task.__dict__.get(o[0]).__func__(o[1]))
+                        str_1 =  str_1.replace("$"+v+"$",await variable2.Task.__dict__.get(o[0]).__func__(o[1]),event)
+                        print(str_1)
                 except(AttributeError):
                     pass
                 k.append(str_1)
