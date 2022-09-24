@@ -27,7 +27,7 @@ def opendictxt(): ##打开词库
             if f[len(f)-1].find("\n")==-1:
                 f.append("\n")
                 f[len(f)-2] = f[len(f)-2]+"\n"
-
+            f.append("\n")
             qrdic_json = f
             return qrdic_json
     except(FileNotFoundError):
