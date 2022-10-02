@@ -54,7 +54,7 @@ async def duquming(): ##读取命令
         保存索引 方便下次检索
         """
         if i == 0 and a[i] != "\n":
-            v = str(str(a[i]).replace(str(a[i])[-1],""))
+            v = str(str(a[i]).replace(str(a[i])[-1],"").replace("\ufeff",""))
             b.append(v)
             t[v] = str(i)
 
@@ -77,39 +77,98 @@ async def chuliciku(msg,event): ##读取词库
     event : 消息的附带参数
     return 返回json数组 是处理好后的词条
     """
+    global judge_code
     global str_1
+    vv = {}
     o = await duquming()
+    judge_code = False
     qr = json.loads(str(o["qrmingn"]).replace("'",'"'))
-    if str(msg)  not in qr:
+    if await regex_zhiling(a=qr,b=str(msg))==False:
         await Matcher.finish()
-        return
-    else:
-        k = []
-        dic = json.loads(str(o["key"]).replace("'",'"'))
-        dic1 = qrdic_json
-        i = (int(dic[msg])+1)
-        while i < len(dic1):
-            if dic1[i]=="\n" :
-                logger.success("消息打印成功")
-                return k
-            else:
-                str_1 = str(dic1[i]).replace(str(dic1[i][-1]), "").replace("\\n","\n").replace("\\r","\r")
-                Rstr = re.findall(r"[%](.*?)[%]", str_1)
-                try:
-                    for u in Rstr:
-                        logger.success(f"词库变量{u}加载成功")
-                        str_1 = str_1.replace("%"+u+"%", await message.message.__dict__.get(u).__func__(event))
-                    ORstr = re.findall(r"[$](.*?)[$]", str_1)
 
-                    for v in ORstr:
-                        logger.success(f"词库变量{v}加载成功")
-                        o = v.split(' ',1)
-                        str_1 =  str_1.replace("$"+v+"$",await variable2.Task.__dict__.get(o[0]).__func__(o[1]),event)
-                        print(str_1)
-                except(AttributeError):
-                    pass
-                k.append(str_1)
-            i = i+1
+    vv.update(await regex_zhiling(a=qr,b=str(msg)))
+    k = []
+    dic = json.loads(str(o["key"]).replace("'",'"'))
+    dic1 = qrdic_json
+    i = (int(dic[vv["zhiling"]])+1)
+    while i < len(dic1):
+        if dic1[i]=="\n" :
+            vv = {}
+            logger.success("消息打印成功")
+            return k
+        else:
+            str_1 = str(dic1[i]).replace(str(dic1[i][-1]), "").replace("\\n","\n").replace("\\r","\r")
+            Rstr = re.findall(r"[%](.*?)[%]", str_1)
+            if str_1 == "如果尾" and judge_code == True:
+                judge_code = False
+                str_1 = ''
+
+            if judge_code == True:
+                str_1 = ''
+
+            for u in Rstr:
+                logger.success(f"词库变量{u}加载成功")
+                try:
+                    if u in vv:
+                        str_1 = str_1.replace("%" + u + "%", vv[str(u)])
+                        logger.success(f"自创变量{u}加载成功")
+                    str_1 = str_1.replace("%" + u + "%", await message.message.__dict__.get(u).__func__(event))
+                    logger.success(f"词库变量{u}加载成功")
+                except(KeyError,TypeError,AttributeError):
+                    str_1 = str_1
+
+            ORstr = re.findall(r"[$](.*?)[$]", str_1)
+            for v in ORstr:
+                try:
+                    logger.success(f"词库变量{v}加载成功")
+                    o = v.split(' ',1)
+                    str_1 =  str_1.replace("$"+v+"$",await variable2.Task.__dict__.get(o[0]).__func__(event,o[1]))
+                except(KeyError,AttributeError,TypeError):
+                    str_1 = str_1
+
+            l = str_1.split(":",maxsplit=1)
+            if l[0]=="如果":
+                logger.warning("判断成功触发 开始过滤")
+                if await judge(p=l[1])==True and judge_code== False:
+                    str_1 = ''
+                else:
+                    str_1 = ''
+                    judge_code = True
+
+            if len(l[0])==1 and len(l)==2:
+                vv[str(l[0])] = str(l[1])
+                str_1 = ''
+
+            if str_1 == "返回" and judge_code == False:
+                vv = {}
+                logger.success("消息打印成功 [返回]")
+                return k
+        k.append(str_1)
+        i = i+1
+
+
+async def judge(p): ##判断
+    p = str(p).replace("|"," or ").replace("&"," and ")##转义符
+    return eval(p)
+
+async def regex_zhiling(a,b): ##指令中的正则匹配
+        vv = {}
+        for a in a:
+            o = re.findall(a, b)
+            if o == []:
+                continue
+            if o[0] == a:
+                vv["zhiling"]=a
+                vv[str("参数-1")] = a
+                return vv
+            i = 0
+            vv["zhiling"]=a
+            for o in o:
+                vv[str("参数") + str(i)] = o
+                return vv
+
+        return False
+
 
 test = on_message(priority=1)
 @test.handle()
