@@ -2,6 +2,7 @@ import httpx
 import random
 import os
 from nonebot import get_bot
+from nonebot import get_driver
 import configparser
 """
 本层是写 bingyuedic 的$变量封装
@@ -19,16 +20,15 @@ async def messagetype(event, message_type, int):
     """
     event = event.get_message()
     a = list(event)
-    global i
     i = 0
-    o = {"text":"text","image":"url","face":"id"} ##支持的消息类型
+    o = {"text":"text","image":"url","face":"id","json":""} ##支持的消息类型
     for a in a:
         if a.type == message_type and i == int:
             o = o[message_type]
             return a.data[o]
 
         if a.type == message_type:
-            i = i + 1
+            i =+ 1
     return ''
 
 class Task:
@@ -61,8 +61,8 @@ class Task:
             n.read(lujing[0], encoding='utf-8')
             get = lujing[1]
             return str(dict(n.items("bingyue-dic-free-binhe"))[get])
-        except(configparser.NoSectionError,FileNotFoundError,FileExistsError):
-            return lujing[2]
+        except(configparser.NoSectionError,FileNotFoundError,FileExistsError,KeyError):
+            return str(lujing[2])
 
 
     @staticmethod
@@ -168,3 +168,17 @@ class Task:
             "enable": o
         })
         return ''
+
+    @staticmethod
+    async def 管理员(event,self:str):
+        """
+        判断qq号是否在管理列表
+        self : [QQ]
+        return : QQ (不存在返回0)
+        """
+        self = self.split(maxsplit=1)
+        if self[0] in get_driver().config.dict().get("admin_dic",[]) :
+            return self[0]
+        else:
+            return '0'
+
