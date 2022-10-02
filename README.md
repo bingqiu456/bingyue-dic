@@ -47,7 +47,7 @@ admin_dic=["1001","10212"]
 
 # 一键部署
 1.确保你电脑已经拥有``python3.7``或``更高版本``<br>
-2.[点击下载部署包]()<br>
+2.[点击下载部署包](https://github.com/bingqiu456/bingyue-dic/releases/download/0.9.0/bingyue-dic.zip)<br>
 3.解压<br>
 4.运行``安装依赖库.bat``<br>
 5.运行``点我启动.bat``<br>
