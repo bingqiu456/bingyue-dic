@@ -148,8 +148,8 @@ async def chuliciku(msg,event): ##读取词库
 
 
 async def judge(p): ##判断
-    p = str(p).replace("|"," or ").replace("&"," and ")##转义符
-    return eval(p)
+    p = str(p).replace("|", '" or "').replace("&", '" and "').replace("==", '"=="')  ##转义符
+    return eval('"'+p+'"')
 
 async def regex_zhiling(a,b): ##指令中的正则匹配
         vv = {}
