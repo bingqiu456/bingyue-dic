@@ -1,7 +1,7 @@
 <div align="center">
 
 # Bingyue Dictionary
-_✨ 一个可以支持变量的词库系统 ✨_
+_✨ 一个可以支持变量的词库系统 基于nonebot✨_
     <br></br>
 </div>
 
@@ -12,51 +12,14 @@ _✨ 一个可以支持变量的词库系统 ✨_
 
 <br></br>
 
-# 如何安装?如何使用?
-1.首先确保电脑上有``python3.7或者更高版本``
-
-2.打开你的``cmd``
-
-3.先把镜像站切换到清华源
-```bash
-pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
-```
-
-4.然后安装我的库
-```bash
-pip install bingyue-dic
-```
-
-5.如果出现``Requirement already``或者``Successfully``就说明已经安装成功
-
-6.加载到nonebot上
-
-打开你的`bot.py` 加上这条语句
-```bash
-nonebot.load_plugin("bingyue_dic")
-```
-
-同时在你的`.env.dev（nonebot配置文件）`加上
-```bash
-owner_dic=1212212
-admin_dic=["1001","10212"]
-```
-
-7.在你的nonebot机器人目录下 新建一个叫``dic``的文件夹
-
-再新建一个`dic.txt`
-
-就能开始编写词库了
-
-<br></br>
-
 # 一键部署
 1.确保你电脑已经拥有``python3.7``或``更高版本``<br>
-2.[点击下载部署包](https://github.com/bingqiu456/bingyue-dic/releases/download/0.9.0/bingyue-dic.zip)<br>
+2.[点击下载部署包](https://github.com/bingqiu456/bingyue-dic/releases/download/0.9.2/bingyue-dic.zip)<br>
 3.解压<br>
 4.运行``安装依赖库.bat``<br>
-5.运行``点我启动.bat``<br>
-6.在``cq配置文件里`` <br>
+5.运行``点我更新.bat``<br>
+6.运行``点我启动.bat``<br>
+7.在``cq配置文件里`` <br>
 
 找到<br>
 ```bash
@@ -80,15 +43,16 @@ admin_dic=["0"] ##词库管理员列表
 
 <br></br>
 
-# 目前已适配的语法
+# 目前已适配的语法(注:本页变量大全不再更新 请转移我的[博客](http://blog.bingyue.xyz))
 - [x] ``如果``
 - [x] ``如果尾``
 - [x] ``返回``
 - [x] ``取变量``   
+- [x] ``正则匹配``
 
 <br></br>
 
-# 目前适配的变量
+# 目前适配的变量(注:本页变量大全不再更新 请转移我的[博客](http://blog.bingyue.xyz))
 - [x] ``%QQ%``：发言人QQ
 - [x] ``%Robot%`` 机器人QQ
 - [x] ``%群号%`` 获取qq群号
@@ -104,11 +68,7 @@ admin_dic=["0"] ##词库管理员列表
 - [x] ``$全体禁言 群号 开$`` 全体禁言
 - [x] ``$获取 消息类型 第几个$`` 获取消息参数
 - [x] ``$管理员 %QQ%$`` 判断该qq号在不在词库管理员列表 true则返回qq号 false返回0
-
-<br></br>
-
-# 未来打算适配的
-``待补充``
+- [x] ``%Type%`` 获取消息类型
 
 <br></br>
 
