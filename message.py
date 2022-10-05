@@ -33,7 +33,7 @@ class message(object):
         return int 机器人QQ号
         """
         return str(self.self_id)
-    
+
     @staticmethod
     async def 主人(self):
         """
@@ -51,3 +51,7 @@ class message(object):
         return : str = 管理员列表
         """
         return str(get_driver().config.dict().get("admin_dic","你还没管理员"))
+
+    @staticmethod
+    async def Type(self):
+        for u in list(self.get_message()): return u.type
