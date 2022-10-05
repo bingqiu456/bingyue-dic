@@ -98,7 +98,7 @@ async def chuliciku(msg,event): ##读取词库
             return k
         else:
             str_1 = str(dic1[i]).replace(str(dic1[i][-1]), "").replace("\\n","\n").replace("\\r","\r")
-            Rstr = re.findall(r"[%](.*?)[%]", str_1)
+
             if str_1 == "如果尾" and judge_code == True:
                 judge_code = False
                 str_1 = ''
@@ -106,6 +106,7 @@ async def chuliciku(msg,event): ##读取词库
             if judge_code == True:
                 str_1 = ''
 
+            Rstr = re.findall(r"[%](.*?)[%]", str_1)
             for u in Rstr:
                 logger.success(f"词库变量{u}加载成功")
                 try:
@@ -143,13 +144,14 @@ async def chuliciku(msg,event): ##读取词库
                 vv = {}
                 logger.success("消息打印成功 [返回]")
                 return k
-        k.append(str_1)
+        if str_1 != '':
+            k.append(str_1)
         i = i+1
 
 
 async def judge(p): ##判断
     p = str(p).replace("|", '" or "').replace("&", '" and "').replace("==", '"=="')  ##转义符
-    return eval('"'+p+'"')
+    return eval('"' + p + '"')
 
 async def regex_zhiling(a,b): ##指令中的正则匹配
         vv = {}
@@ -177,8 +179,10 @@ async def _(event: Event,group:GroupMessageEvent,A:Message=EventPlainText()):
     ##获取消息的参数
     b = await chuliciku(msg=A,event=group)
     ##给词库匹配
-    if str(b)=="['']":
+    if b ==[]:
         logger.success("触发成功 但返回了空消息")
         await test.finish()
     logger.success(f'词库指令{str(message)}已触发')
-    await test.finish(b)
+    if str(b):
+        await test.finish(b)
+    #print(b)
