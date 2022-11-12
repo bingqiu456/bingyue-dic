@@ -17,7 +17,9 @@ from . import variable2
 from . import message
 
 
-
+logger.success("bingyue-dic启动成功")
+logger.success("Github: github.com/bingqiu456/bingyue-dic")
+logger.success("变量大全看: blog.bingyue.xyz")
 def opendictxt(): ##打开词库
     try:
         with open("./dic/dic.txt","r",encoding="utf_8") as f:
@@ -108,7 +110,6 @@ async def chuliciku(msg,event): ##读取词库
 
             Rstr = re.findall(r"[%](.*?)[%]", str_1)
             for u in Rstr:
-                logger.success(f"词库变量{u}加载成功")
                 try:
                     if u in vv:
                         str_1 = str_1.replace("%" + u + "%", vv[str(u)])
@@ -122,11 +123,10 @@ async def chuliciku(msg,event): ##读取词库
             for v in ORstr:
                 try:
                     logger.success(f"词库变量{v}加载成功")
-                    o = v.split(' ',1)
-                    str_1 =  str_1.replace("$"+v+"$",await variable2.Task.__dict__.get(o[0]).__func__(event,o[1]))
-                except(KeyError,AttributeError,TypeError):
+                    o = v.split(' ', 1)
+                    str_1 = str_1.replace("$" + v + "$", await variable2.Task.__dict__.get(o[0]).__func__(event, o[1]))
+                except(KeyError, AttributeError, TypeError):
                     str_1 = str_1
-
             l = str_1.split(":",maxsplit=1)
             if l[0]=="如果":
                 logger.warning("判断成功触发 开始过滤")
@@ -153,24 +153,19 @@ async def judge(p): ##判断
     p = str(p).replace("|", '" or "').replace("&", '" and "').replace("==", '"=="')  ##转义符
     return eval('"' + p + '"')
 
-async def regex_zhiling(a,b): ##指令中的正则匹配
-        vv = {}
-        for a in a:
-            o = re.findall(a, b)
-            if o == []:
-                continue
-            if o[0] == a:
-                vv["zhiling"]=a
-                vv[str("参数-1")] = a
-                return vv
+async def regex_zhiling(a, b):  ##指令中的正则匹配
+    vv = {"zhiling":b}
+    if b in a:
+        return vv
+    for a in a:
+        j = re.findall(a, b)
+        if j !=[] and re.search(r'[^.]\*', a):
             i = 0
-            vv["zhiling"]=a
-            for o in o:
-                vv[str("参数") + str(i)] = o
-                return vv
-
-        return False
-
+            for g in j[0]:
+                vv[f"参数{i}"] = g
+                i+=1
+            return vv
+    return False
 
 test = on_message(priority=1)
 @test.handle()
@@ -185,4 +180,3 @@ async def _(event: Event,group:GroupMessageEvent,A:Message=EventPlainText()):
     logger.success(f'词库指令{str(message)}已触发')
     if str(b):
         await test.finish(b)
-    #print(b)

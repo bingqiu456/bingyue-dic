@@ -1,9 +1,12 @@
 import httpx
 import random
 import os
+import re
 from nonebot import get_bot
 from nonebot import get_driver
+import json
 import configparser
+import ast
 """
 本层是写 bingyuedic 的$变量封装
 查看帮助 还没有
@@ -58,7 +61,7 @@ class Task:
         try:
             lujing = self.split(" ",maxsplit=2)
             n = configparser.ConfigParser()
-            n.read(lujing[0], encoding='utf-8')
+            n.read(lujing[0]+'.ini', encoding='utf-8')
             get = lujing[1]
             return str(dict(n.items("bingyue-dic-free-binhe"))[get])
         except(configparser.NoSectionError,FileNotFoundError,FileExistsError,KeyError):
@@ -91,13 +94,15 @@ class Task:
         return ""
 
     @staticmethod
-    async def 访问(url: str):
+    async def 访问(event, self: str):
         """
         访问外部链接
-        url : 网站连接
+        self : [网站连接]
         return 访问内容
         """
-        return await httpx.AsyncClient().get(url=url,headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36" }).text
+        url = self
+        v = await httpx.AsyncClient().get(url=url,headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36" })
+        return v.text
 
     @staticmethod
     async def 写(event,self: str):
@@ -111,17 +116,17 @@ class Task:
             os.makedirs(a[0])
             os.rmdir(a[0])
         n = configparser.ConfigParser()
-        n.read(a[0], encoding='utf-8')
+        n.read(a[0]+'.ini', encoding='utf-8')
         try:
             n.set("[bingyue-dic-free-binhe]", str(a[1]), str(a[2]))
         except(configparser.NoSectionError):
-            with open(a[0], "w+", encoding="utf_8") as f:
+            with open(a[0]+'.ini', "w+", encoding="utf_8") as f:
                 f.write(str("[bingyue-dic-free-binhe]"))
                 f.close()
 
-        n.read(a[0], encoding='utf-8')
+        n.read(a[0]+'.ini', encoding='utf-8')
         n.set("bingyue-dic-free-binhe", str(a[1]), str(a[2]))
-        with open(a[0], "w+", encoding="utf_8") as f:
+        with open(a[0]+'.ini', "w+", encoding="utf_8") as f:
             n.write(f)
             f.close()
         return ''
@@ -181,4 +186,34 @@ class Task:
             return self[0]
         else:
             return '0'
+
+
+    #@staticmethod
+    #async def 取JSON(event,self:str):
+        """
+        取json值
+        self : [索引,json数据]
+        return : 取
+        """
+     #   self  = self.split(maxsplit=1)
+     #   print(self)
+     #   return eval(str(self[1])+str(self[0]))
+
+    @staticmethod
+    async def JSON长度(event, self:str):
+        """
+        json长度
+        self : [json数据]
+        return : str
+        """
+        self = self.split(maxsplit=1)
+        json = ast.literal_eval(self[0])
+        return str(len(json))
+
+
+
+
+
+    
+    
 
