@@ -8,13 +8,13 @@ _✨ 一个可以支持变量的词库系统 基于nonebot✨_
 # 新人必看
 如果你不懂python或者如何使用cq<br>
 可以前往我博客观看教程<br>
-[点击进入](http://blog.bingyue.xyz)<br>
+[点击进入](http://blog.bingyue.top)<br>
 
 <br></br>
 
 # 一键部署
 1.确保你电脑已经拥有``python3.7``或``更高版本``<br>
-2.[点击下载部署包](https://github.com/bingqiu456/bingyue-dic/releases/download/0.9.2/bingyue-dic.zip)<br>
+2.[点击下载部署包](https://github.com/bingqiu456/bingyue-dic/releases/download/0.9.6.1/bingyue-dic.beta0.9.6.1.zip)<br>
 3.解压<br>
 4.运行``安装依赖库.bat``<br>
 5.运行``点我更新.bat``<br>
@@ -43,7 +43,7 @@ admin_dic=["0"] ##词库管理员列表
 
 <br></br>
 
-# 目前已适配的语法(注:本页变量大全不再更新 请转移我的[博客](http://blog.bingyue.xyz))
+# 目前已适配的语法(注:本页变量大全不再更新 请转移我的[博客](http://blog.bingyue.top))
 - [x] ``如果``
 - [x] ``如果尾``
 - [x] ``返回``
@@ -52,7 +52,7 @@ admin_dic=["0"] ##词库管理员列表
 
 <br></br>
 
-# 目前适配的变量(注:本页变量大全不再更新 请转移我的[博客](http://blog.bingyue.xyz))
+# 目前适配的变量(注:本页变量大全不再更新 请转移我的[博客](http://blog.bingyue.top))
 - [x] ``%QQ%``：发言人QQ
 - [x] ``%Robot%`` 机器人QQ
 - [x] ``%群号%`` 获取qq群号
@@ -81,8 +81,5 @@ admin_dic=["0"] ##词库管理员列表
 
 最后本项目<br>
 仅供`研究学习` 请不要`内战`<br>
-但我劝你最好去学`python` 编写属于自己的插件<br>
 `伪代码`没啥前途 说真的<br>
-更新随缘<br>
-同时也不要拿去跟某些框架比<br>
 
